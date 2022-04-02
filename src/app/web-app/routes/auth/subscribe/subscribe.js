@@ -14,11 +14,8 @@ class Subscribe {
             throw new Error('Not same password')
 
         http.url('subscribe').method('POST').body({ firstName, lastName, birthday, gender, email, pseudo, password }).send()
-        .then(res => {
-            token.set(res.token)
-            redirect.to()
-        })
-        .catch((err) => console.log(err))
+        .then(res => token.set(res.token) )
+        .catch((err) => console.log(err) )
     }
 
 }

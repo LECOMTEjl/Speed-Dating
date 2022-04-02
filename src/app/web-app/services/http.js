@@ -44,15 +44,26 @@ class Http {
         this._headers = undefined
         this._body = undefined
 
+        console.log(
+            url,
+            fetchInit.method,
+            fetchInit.headers,
+            fetchInit.body
+            )
+
         return fetch(url, fetchInit)
         .then(res => {
             if(token.exist() && res.status == 401)
                 token.remove()
 
             if(res.status == 200)
-                return res.json()
+                return res.json().then(msg => {
+                    return msg
+                })
             else
-                return res.text()
+                return res.text().then(msg => {
+                    throw new Error(msg)
+                })
         })
     }
 }

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { passwordsAreEqual } = require('../security/crypto');
-const { verifyAuthToken, generateAuthToken } = require('../security/auth');
+const { generateAuthToken } = require('../security/auth');
 
 const { body, validationResult } = require('express-validator');
 
@@ -44,13 +44,15 @@ router.post('/subscribe', (req, res) => {
   })
 })
 
-router.post('/login', (req, res) => {
-  
-  body('email').exists().isEmail().withMessage('Email is empty')
-  body('email').isEmail().withMessage('Email is not a email')
-  body('password').exists().withMessage('Password is empty')
-
+router.post('/login', 
+  body('email').exists().withMessage('Email is empty'),
+  body('email').isEmail().withMessage('Email is not a email'),
+  body('email').notEmpty().withMessage('Email is empty'),
+  body('password').exists().withMessage('Password is empty'),
+  body('password').notEmpty().withMessage('Password is empty'),
+  (req, res) => {
   const errors = validationResult(req)
+  console.log(errors)
   if (!errors.isEmpty())
     return res.status(400).json({ errors: errors.array() });
 

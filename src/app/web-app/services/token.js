@@ -2,7 +2,10 @@ const TOKEN = 'token'
 
 class Token {
     get() { return localStorage.getItem(TOKEN) }
-    set(token) { localStorage.setItem(TOKEN, token)}
+    set(token) {
+        localStorage.setItem(TOKEN, token)
+        redirect.to()
+    }
     remove() {
         localStorage.removeItem(TOKEN)
         redirect.to('login')

@@ -15,10 +15,10 @@
             <h1>Login</h1>
 
             <p>Email</p>
-            <input id="Email"    placeholder="Email" type="email">
+            <input id="Email" placeholder="Email" type="email" pattern="[\d\w]+@[\d\w]+\.[\d\w]+">
 
             <p>Password</p>
-            <input id="Password" placeholder="Password" type="password">
+            <input id="Password" placeholder="Password" type="password" pattern=".{8,}">
             <button onclick="login.login()">Login</button>
         </div>
     </body>
