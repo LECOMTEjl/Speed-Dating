@@ -1,0 +1,12 @@
+const express = require('express');
+const router = express.Router();
+
+const userRoutes = require('./controllers/user.routes')
+const authRoutes = require('./controllers/auth.routes')
+
+const route = '/api'
+
+router.use(route, userRoutes.initializeRoutes());
+router.use(route, authRoutes.initializeRoutes());
+
+exports.initializeRoutes = () => router

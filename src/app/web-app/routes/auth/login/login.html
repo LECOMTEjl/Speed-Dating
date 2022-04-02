@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="styles.css" rel="stylesheet">
+        <link href="routes/auth/auth.css" rel="stylesheet">
+        <link href="routes/auth/login/login.css" rel="stylesheet">
+    </head>
+    <script src="environment.js"></script>
+    <script src="services/redirect.js"></script>
+    <script src="services/token.js"></script>
+    <script src="services/http.js"></script>
+    <script src="routes/auth/login/login.js"></script>
+    <body>
+        <div id="container">
+            <h1>Login</h1>
+
+            <p>Email</p>
+            <input id="Email"    placeholder="Email" type="email">
+
+            <p>Password</p>
+            <input id="Password" placeholder="Password" type="password">
+            <button onclick="login.login()">Login</button>
+        </div>
+    </body>
+</html>
