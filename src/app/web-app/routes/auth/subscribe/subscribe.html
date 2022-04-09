@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Speed Dating - S'inscrire</title>
         <link href="styles.css" rel="stylesheet">
         <link href="routes/auth/auth.css" rel="stylesheet">
         <link href="routes/auth/subscribe/subscribe.css" rel="stylesheet">
@@ -11,37 +12,66 @@
     <script src="services/http.js"></script>
     <script src="routes/auth/subscribe/subscribe.js"></script>
     <body>
-        <div id="container">
-            <h1>Subscribe</h1>
+        <form id="container" onsubmit="return false">
+            <h1>S'inscrire</h1>
 
-            <p>FirstName</p>
-            <input id="FirstName" placeholder="FirstName">
+            <div class="input-div">
+                <p>Email</p>
+                <input
+                    id="Email"
+                    placeholder="Email"
+                    type="email"
+                    pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})"
+                    required
+                    onkeyup="subscribe.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
+                    onchange="subscribe.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
+                >
+                <span class="hint"></span>
+            </div>
 
-            <p>LastName</p>
-            <input id="LastName" placeholder="LastName">
+            <div class="input-div">
+                <p>Pseudo</p>
+                <input
+                    id="Pseudo"
+                    placeholder="Pseudo"
+                    required
+                    onkeyup="subscribe.setInvalidMsg(this)"
+                    onchange="subscribe.setInvalidMsg(this)"
+                >
+                <span class="hint"></span>
+            </div>
 
-            <p>Birthday</p>
-            <input id="Birthday" placeholder="Birthday" type="date">
+            <div class="input-div">
+                <p>Mot de passe</p>
+                <input
+                    id="Password"
+                    placeholder="Mot de passe"
+                    type="password"
+                    pattern=".{8,}"
+                    required
+                    onkeyup="subscribe.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                    onchange="subscribe.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                >
+                <span class="hint"></span>
+            </div>
 
-            <p>Gender</p>
-            <select id="Gender">
-                <option>Man</option>
-                <option>Woman</option>
-            </select>
-
-            <p>Email</p>
-            <input id="Email" placeholder="Email" type="email">
-
-            <p>Pseudo</p>
-            <input id="Pseudo" placeholder="Pseudo">
-
-            <p>Password</p>
-            <input id="Password" placeholder="Password" type="password">
-
-            <p>Valid Password</p>
-            <input id="ValidPassword" placeholder="ValidPassword" type="password">
+            <div class="input-div">
+                <p>Valider le mot de passe</p>
+                <input
+                    id="ValidPassword"
+                    placeholder="Mot de passe"
+                    type="password"
+                    pattern=".{8,}"
+                    required
+                    onkeyup="subscribe.checkIfIsSamePassword(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                    onchange="subscribe.checkIfIsSamePassword(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                >
+                <span class="hint"></span>
+            </div>
             
-            <button onclick="subscribe.subcribe()">Subscribe</button>
-        </div>
+            <button id="Subscribe" onclick="subscribe.subscribe()" disabled>S'inscrire</button>
+            <p>Vous avez un compte ? <a href="http://localhost:3000/app/login">S'identifier</a></p>
+        </form>
     </body>
+    <script src="services/toast.js"></script>
 </html>

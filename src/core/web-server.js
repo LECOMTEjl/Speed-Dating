@@ -13,6 +13,7 @@ class WebServer {
     this.app = express();
 
     initGlobalMiddlwares(this.app)
+    
     this.app.use(apiRouter.initializeRoutes())
     this.app.use(appRouter.initializeRoutes())
   }

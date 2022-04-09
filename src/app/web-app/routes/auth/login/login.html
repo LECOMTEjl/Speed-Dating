@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Speed Dating - S'identifier</title>
         <link href="styles.css" rel="stylesheet">
         <link href="routes/auth/auth.css" rel="stylesheet">
         <link href="routes/auth/login/login.css" rel="stylesheet">
@@ -11,15 +12,40 @@
     <script src="services/http.js"></script>
     <script src="routes/auth/login/login.js"></script>
     <body>
-        <div id="container">
-            <h1>Login</h1>
+        <form id="container" onsubmit="return false">
+            <h1>S'identifier</h1>
 
-            <p>Email</p>
-            <input id="Email" placeholder="Email" type="email" pattern="[\d\w]+@[\d\w]+\.[\d\w]+">
+            <div class="input-div">
+                <p>Email</p>
+                <input
+                    id="Email"
+                    placeholder="Email"
+                    type="email"
+                    pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})"
+                    required
+                    onkeyup="login.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
+                    onchange="login.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
+                >
+                <span class="hint"></span>
+            </div>
 
-            <p>Password</p>
-            <input id="Password" placeholder="Password" type="password" pattern=".{8,}">
-            <button onclick="login.login()">Login</button>
-        </div>
+            <div class="input-div">
+                <p>Mot de passse</p>
+                <input
+                    id="Password"
+                    placeholder="Mot de passse"
+                    type="password"
+                    pattern=".{8,}"
+                    required
+                    onkeyup="login.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                    onchange="login.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
+                >
+                <span class="hint"></span>
+            </div>
+
+            <button id="Login" onclick="login.login()" disabled>S'identifier</button>
+            <p>Vous n'avez pas de un compte ? <a href="http://localhost:3000/app/subscribe">S'identifier</a></p>
+        </form>
     </body>
+    <script src="services/toast.js"></script>
 </html>

@@ -16,7 +16,15 @@ class Http {
     }
 
     headers(headers) {
-        this._headers = headers
+        this._headers = Object.assign(headers, this._headers)
+        return this
+    }
+
+    authorization(token) {
+        if(!token)
+            token = window['token'].get()
+        
+        this._headers = Object.assign({Authorization : 'Bearer ' + token}, this._headers)
         return this
     }
     
@@ -56,13 +64,17 @@ class Http {
             if(token.exist() && res.status == 401)
                 token.remove()
 
-            if(res.status == 200)
+            if(res.status >= 200 && res.status < 300) {
                 return res.json().then(msg => {
                     return msg
                 })
+                .catch(err => {
+                    throw {status: res.status, msg: err}
+                })
+            }
             else
                 return res.text().then(msg => {
-                    throw new Error(msg)
+                    throw {status: res.status, msg: msg}
                 })
         })
     }

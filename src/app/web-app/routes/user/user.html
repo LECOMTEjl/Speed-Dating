@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Speed Dating</title>
+        <link href="http://localhost:3000/app/styles.css" rel="stylesheet">
+        <link href="http://localhost:3000/app/routes/user/user.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    </head>
+    <script src="http://localhost:3000/app/environment.js"></script>
+    <script src="http://localhost:3000/app/services/redirect.js"></script>
+    <script src="http://localhost:3000/app/services/token.js"></script>
+    <script src="http://localhost:3000/app/services/http.js"></script>
+    <script src="http://localhost:3000/app/services/utils.js"></script>
+    <script src="http://localhost:3000/app/routes/user/user.js"></script>
+    <body>
+        <div id="container">
+            <div id="top-bar">
+                <img src="http://localhost:3000/app/assets/left-arrow.png" onclick="redirect.to()">
+            </div>
+            <div id="header">
+                <!-- Wait for api response -->
+            </div>
+            <div class="body">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col" colspan="3">Vos rencontres</th>
+                        </tr>
+                        <tr>
+                            <td>Date</td>
+                            <td>Note</td>
+                            <td>Commentaire</td>
+                        </tr>
+                    </thead>
+                    <tbody id="body">
+                        <!-- Wait for api response -->
+                    </tbody>
+                </table>
+                <button id="add-meet" onclick="user.generateDialog()">+</button>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <form id="form">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="input-div">
+                                <p>Date</p>
+                                <input
+                                    id="datetime"
+                                    type="datetime-local"
+                                    required
+                                    onkeyup="user.setInvalidMsg(this, 'Ne doit pas être vide')"
+                                    onchange="user.setInvalidMsg(this, 'Ne doit pas être vide')"
+                                >
+                                <label class="hint"></label>
+                            </div>
+
+                            <div class="input-div">
+                                <p>Note</p>
+                                <input
+                                    id="note"
+                                    type="number"
+                                    min="0" max="10"
+                                    step="1"
+                                    onkeyup="user.setInvalidMsg(this, 'Doit être compris entre 0 et 10')"
+                                    onchange="user.setInvalidMsg(this, 'Doit être compris entre 0 et 10')"
+                                >
+                                <label class="hint"></label>
+                            </div>
+                        
+                            <div class="input-div">
+                                <p>Commentaires</p>
+                                <input id="comment">
+                                <label class="hint"></label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="user.hideDialog()">Annuler</button>
+                            <button type="button" class="btn btn-primary" id="validModal">Valider</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+    <script src="http://localhost:3000/app/services/toast.js"></script>
+</html>

@@ -1,70 +1,112 @@
 const express = require('express');
 const router = express.Router();
 const { passwordsAreEqual } = require('../security/crypto');
-const { generateAuthToken } = require('../security/auth');
+const { generateAuthToken, verifyAuthToken } = require('../security/auth');
 
 const { body, validationResult } = require('express-validator');
 
-const Users = require('../models/DAOUsers')
+const Subscriber = require('../models/DAOSubscriber')
 
-/*
-const otherRouter = express.Router()
-otherRouter.post('/test', (req, res) => {res.send('ok')})
-router.use('/api', otherRouter)
-*/
+const guard = require('express-jwt-permissions')({
+    permissionsProperty: 'role',
+});
+const adminRole = 'ADMIN';
+const roles = [[adminRole], ['MEMBER']];
 
-router.post('/subscribe', (req, res) => {
-  body('firstName').exists().withMessage('FirstName is empty')
-  body('lastName').exists().withMessage('LastName is empty')
-  body('gender').exists().withMessage('Gender is empty')
-  body('birthday').exists().withMessage('Birthday is empty')
-  body('pseudo').exists().withMessage('Pseudo is empty')
-  body('email').exists().isEmail().withMessage('Email is empty')
-  body('email').isEmail().withMessage('Email is not a email')
-  body('password').exists().withMessage('Password is empty')
+const getSubscriber = (authorization) => {
+    var user
+    try {
+        user = verifyAuthToken(authorization)
+    }
+    catch (e) {
+        console.log(e)
+    }
+    return user
+}
 
-  const errors = validationResult(req);
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
+router.get('/subscriber',
+    guard.check(roles),
+    (req, res) => {
 
-  const { firstName, lastName, gender, birthday, email, pseudo, password } = req.body;
-  Users.add(firstName, lastName, gender, birthday, email, pseudo, password).then((userID) => {
-    Users.findByID(userID[0]).then((user) => {
-      const token = generateAuthToken(user)
-      res.status(200).json({ token })
-    })
-    .catch((err) => {
-      console.log('Error : FindById', err)
-      res.sendStatus(500)
-    })
-  })
-  .catch((err) => {
-    console.log('Error : Add', err)
-    res.sendStatus(500)
-  })
+    var subscriber = getSubscriber(req.headers.authorization)
+    if (!subscriber) return res.sendStatus(401)
+    
+    Subscriber.getById(subscriber.id)
+    .then(subscriber => res.status(200).send(subscriber[0]))
+    .catch(err => console.log('Error : Subscriber.getById', err))
 })
 
-router.post('/login', 
-  body('email').exists().withMessage('Email is empty'),
-  body('email').isEmail().withMessage('Email is not a email'),
-  body('email').notEmpty().withMessage('Email is empty'),
-  body('password').exists().withMessage('Password is empty'),
-  body('password').notEmpty().withMessage('Password is empty'),
-  (req, res) => {
-  const errors = validationResult(req)
-  console.log(errors)
-  if (!errors.isEmpty())
-    return res.status(400).json({ errors: errors.array() });
+router.post('/subscribe',
+    body('email').exists().isEmail().withMessage('Email is empty'),
+    body('email').notEmpty().isEmail().withMessage('Email is empty'),
+    body('email').isEmail().withMessage('Email is not a email'),
 
-  const { email, password } = req.body
-  Users.findByEmail(email).then((user) => {
-    user = user[0]
-    if (!user || !passwordsAreEqual(password, user.password))
-      return res.sendStatus(401)
-  
-    const token = generateAuthToken(user)
-    res.status(200).json({ token })
-  })
+    body('pseudo').exists().withMessage('Pseudo is empty'),
+    body('pseudo').notEmpty().withMessage('Pseudo is empty'),
+
+    body('password').exists().withMessage('Password is empty'),
+    body('password').notEmpty().withMessage('Password is empty'),
+    (req, res) => {
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty())
+            return res.status(400).json({ errors: errors.array() });
+
+        const { email, pseudo, password } = req.body;
+
+        Subscriber.findByEmail(email).then(subscriber => {
+            if(subscriber?.[0])
+                return res.sendStatus(409)
+            
+            Subscriber.add(email, pseudo, password).then(subscriberId => {
+                Subscriber.findByID(subscriberId[0]).then(subscriber => {
+                    subscriber = subscriber[0]
+                    const token = generateAuthToken(subscriber.id, subscriber.role, subscriber.password)
+                    res.status(201).json({ token })
+                })
+                .catch(err => {
+                    console.log('Error : Subscriber.findByID', err)
+                    res.sendStatus(500)
+                })
+            })
+            .catch(err => {
+                console.log('Error : Subscriber.add', err)
+                res.sendStatus(500)
+            })
+        })
+        .catch(err => {
+            console.log('Error : Subscriber.findByEmail', err)
+            res.sendStatus(500)
+        })
+})
+
+router.post('/login',
+    body('email').exists().withMessage('Email is empty'),
+    body('email').notEmpty().withMessage('Email is empty'),
+    body('email').isEmail().withMessage('Email is not a email'),
+
+    body('password').exists().withMessage('Password is empty'),
+    body('password').notEmpty().withMessage('Password is empty'),
+    (req, res) => {
+
+        const errors = validationResult(req)
+        console.log(errors)
+        if (!errors.isEmpty())
+            return res.status(400).json({ errors: errors.array() });
+
+        const { email, password } = req.body
+        Subscriber.findByEmail(email).then(subscriber => {
+            subscriber = subscriber[0]
+            if (!subscriber || !passwordsAreEqual(password, subscriber.password))
+                return res.sendStatus(401)
+
+            const token = generateAuthToken(subscriber.id, subscriber.role, subscriber.password)
+            res.status(201).json({ token })
+        })
+        .catch(err => {
+            console.log('Error : Subscriber.findByEmail', err)
+            res.sendStatus(500)
+        })
 });
 
 exports.initializeRoutes = () => router;
