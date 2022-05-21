@@ -7,11 +7,17 @@
 }
 
 #top-bar {
-    background-color: aqua;
     width: 100%;
     height: 100px;
     display: flex;
-    box-shadow: 0px 0px 5px rgb(0 0 0 / 50%);
+    z-index: 1;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 1px -1px 0px rgba(255, 255, 255, 0.5),
+                1px 1px 0px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
 }
 
 #top-bar h1 {
@@ -28,13 +34,26 @@
     margin: auto 0;
 }
 
-#top-bar #exit {
-    width: 60px;
-    height: 60px;
+#top-bar .exit {
+    font-size:80px;
     margin: auto 10px;
 }
 
-#body .body-div {
+#body {
+    flex: 1;
+    z-index: 1;
+    margin: 20px;
+    pad: 20px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: -1px -1px 0px rgba(255, 255, 255, 0.5),
+                1px 1px 0px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+#tbody .body-div {
+    backdrop-filter: none;
     display: flex;
     flex-direction: column;
 }
@@ -103,12 +122,49 @@ tbody .user .img {
 }
 
 #add-user {
+    z-index: 1;
     border: none;
-    box-shadow: 0px 0px 5px black;
     padding: 10px;
     margin-block-start: 0;
     margin-block-end: 0;
     margin: 10px 20px 20px;
     font-size: 50px;
-    background-color: aqua;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.3);
+    box-shadow: -1px -1px 0px rgba(255, 255, 255, 0.5),
+                1px 1px 0px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+
+
+.fade {
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.8);
+    pointer-events: all;
+}
+
+.modal-content {
+    background: rgba(255, 255, 255, 0.3) !important;
+    box-shadow: -1px -1px 0px rgba(255, 255, 255, 0.5),
+                1px 1px 0px rgba(0, 0, 0, 0.5) !important;
+    border-radius: 50px !important;
+}
+
+.modal-header {
+    color: #ffffff;
+}
+
+.modal-header * {
+    font-size: 50px !important;
+}
+
+.input-div p {
+    margin: 0;
+}
+
+.input-div p, .input-div input {
+    font-size: 40px;
+    height: 58px;
 }

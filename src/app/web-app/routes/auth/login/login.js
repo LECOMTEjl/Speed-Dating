@@ -16,6 +16,7 @@ class Login {
     }
 
     setInvalidMsg(el, extra) {
+        touchedFunction(el)
         var hint = el.parentElement.getElementsByClassName('hint')?.item(0)
         if(!hint) return
 

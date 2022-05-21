@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { passwordsAreEqual } = require('../security/crypto');
-const { verifyAuthToken, generateAuthToken } = require('../security/auth');
-
-const { body, validationResult } = require('express-validator');
+const { verifyAuthToken } = require('../security/auth');
 
 const Meets = require('../models/DAOMeets')
 

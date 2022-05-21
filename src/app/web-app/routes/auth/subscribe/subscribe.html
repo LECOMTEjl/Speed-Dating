@@ -4,14 +4,16 @@
         <title>Speed Dating - S'inscrire</title>
         <link href="styles.css" rel="stylesheet">
         <link href="routes/auth/auth.css" rel="stylesheet">
-        <link href="routes/auth/subscribe/subscribe.css" rel="stylesheet">
     </head>
     <script src="environment.js"></script>
     <script src="services/redirect.js"></script>
     <script src="services/token.js"></script>
     <script src="services/http.js"></script>
+    <script src="services/touched-function.js"></script>
     <script src="routes/auth/subscribe/subscribe.js"></script>
+    <script src="components/heart-background.js"></script>
     <body>
+        <heart-background></heart-background>
         <form id="container" onsubmit="return false">
             <h1>S'inscrire</h1>
 
@@ -23,7 +25,6 @@
                     type="email"
                     pattern="([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})"
                     required
-                    onkeyup="subscribe.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
                     onchange="subscribe.setInvalidMsg(this, 'Ex : exemple@gmail.com')"
                 >
                 <span class="hint"></span>
@@ -35,7 +36,6 @@
                     id="Pseudo"
                     placeholder="Pseudo"
                     required
-                    onkeyup="subscribe.setInvalidMsg(this)"
                     onchange="subscribe.setInvalidMsg(this)"
                 >
                 <span class="hint"></span>
@@ -49,7 +49,6 @@
                     type="password"
                     pattern=".{8,}"
                     required
-                    onkeyup="subscribe.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
                     onchange="subscribe.setInvalidMsg(this, 'Il doit y avoir un minumun de 8 caractères.')"
                 >
                 <span class="hint"></span>
@@ -63,14 +62,14 @@
                     type="password"
                     pattern=".{8,}"
                     required
-                    onkeyup="subscribe.checkIfIsSamePassword(this, 'Il doit y avoir un minumun de 8 caractères.')"
                     onchange="subscribe.checkIfIsSamePassword(this, 'Il doit y avoir un minumun de 8 caractères.')"
                 >
                 <span class="hint"></span>
             </div>
             
             <button id="Subscribe" onclick="subscribe.subscribe()" disabled>S'inscrire</button>
-            <p>Vous avez un compte ? <a href="http://localhost:3000/app/login">S'identifier</a></p>
+            <p>Vous avez un compte ?</p>
+            <button onclick="redirect.to('login')">S'identifier</button>
         </form>
     </body>
     <script src="services/toast.js"></script>

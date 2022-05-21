@@ -27,7 +27,7 @@ class Main {
     }
 
     setList(list) {
-        var listEl = document.getElementById('body')
+        var listEl = document.getElementById('tbody')
         listEl.innerHTML = ''
         list.forEach(el => {
             listEl.innerHTML += `
