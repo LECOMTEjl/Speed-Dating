@@ -7,7 +7,7 @@ const Meets = require('../models/DAOMeets')
 const route = '/meets'
 
 const getSubscriber = (authorization) => {
-    var user
+    let user
     try {
         user = verifyAuthToken(authorization)
     }
@@ -19,6 +19,9 @@ const getSubscriber = (authorization) => {
 
 router.get(route,
     (req, res) => {
+
+    let subscriber = getSubscriber(req.headers.authorization)
+    if (!subscriber) return res.sendStatus(401)
 
     const userId = +req.query.userId
 
@@ -47,6 +50,9 @@ router.get(route + '/:id',
 
 router.post(route,
     (req, res) => {
+
+    let subscriber = getSubscriber(req.headers.authorization)
+    if (!subscriber) return res.sendStatus(401)
 
     const { userId, date, comment, note } = req.body
 

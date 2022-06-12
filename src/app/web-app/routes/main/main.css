@@ -3,7 +3,9 @@
     flex-direction: column;
     box-shadow: 0px 0px 5px #00000066;
     width: 100%;
-    height: 100%;
+    margin: 0;
+    top:0;
+    bottom: 0;
 }
 
 #top-bar {
@@ -21,7 +23,7 @@
 }
 
 #top-bar h1 {
-    font-size: 70px;
+    font-size: 60px;
     font-variant : small-caps;
     margin: auto 20px;
     flex:1;
@@ -34,16 +36,20 @@
     margin: auto 0;
 }
 
+#top-bar #user * {
+    margin-block: 0;
+}
+
 #top-bar .exit {
-    font-size:80px;
+    font-size:70px;
     margin: auto 10px;
 }
 
 #body {
-    flex: 1;
+    height: 100%;
     z-index: 1;
     margin: 20px;
-    pad: 20px;
+    padding: 20px;
     border-radius: 50px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.1);
@@ -52,76 +58,7 @@
     color: #ffffff;
 }
 
-#tbody .body-div {
-    backdrop-filter: none;
-    display: flex;
-    flex-direction: column;
-}
-
-table {
-    margin: 20px;
-    box-shadow: 0px 0px 5px rgb(0 0 0 / 50%);
-}
-
-thead {
-    font-size: 40px;
-}
-
-thead tr {
-    border-bottom: solid 1px rgb(0 0 0 / 50%);
-}
-
-thead th {
-    padding: 0 10px;
-}
-
-tbody {
-    font-size: 30px;
-    height: fit-content;
-}
-
-table thead,
-table tbody {
-    margin-block-start: 0;
-    margin-block-end: 0;
-    padding: 10px;
-}
-
-thead td {
-    font-size: 30px;
-    padding: 0 10px;
-}
-
-tbody tr {
-    padding: 10px 0;
-}
-
-tbody tr .user {
-    display: flex;
-    margin: auto 0;
-}
-
-tbody tr .user p {
-    margin: auto 0;
-}
-
-tbody td {
-    margin: auto 0;
-    padding: 0 10px;
-}
-
-tbody button {
-    margin: 5px 10px;
-}
-
-tbody .user .img {
-    width: 40px;
-    height: 40px;
-    background-color: beige;
-    border-radius: 50%;
-}
-
-#add-user {
+#add-user, #add-meet {
     z-index: 1;
     border: none;
     padding: 10px;
@@ -138,33 +75,171 @@ tbody .user .img {
 }
 
 
-
-.fade {
-    z-index: 2;
-    background-color: rgba(0, 0, 0, 0.8);
-    pointer-events: all;
-}
-
-.modal-content {
-    background: rgba(255, 255, 255, 0.3) !important;
-    box-shadow: -1px -1px 0px rgba(255, 255, 255, 0.5),
-                1px 1px 0px rgba(0, 0, 0, 0.5) !important;
-    border-radius: 50px !important;
-}
-
-.modal-header {
-    color: #ffffff;
+/* Modal */
+.modal-dialog {
+    max-width: 700px !important;
+    width: 700px !important;
 }
 
 .modal-header * {
     font-size: 50px !important;
 }
 
-.input-div p {
+.modal-content .hint {
+    font-size: 30px;
+}
+
+.modal-content .input-div p {
     margin: 0;
 }
 
-.input-div p, .input-div input {
+.modal-content .input-div p,
+.modal-content .input-div input,
+.modal-content select,
+.modal-content textarea {
+    font-size: 50px;
+    height: 68px;
+}
+
+.modal-content textarea {
+    height: auto;
+}
+
+.input-div .img-btn {
+    margin:auto;
+    background-color: #00000055;
+    background-size: cover;
+    background-position: center;
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+}
+
+.input-div .img-btn * {
+    appearance: none;
+    opacity: 0;
+    width: 300px;
+    height: 300px !important;
+}
+
+
+.modal-footer {
+    padding: 12px 20px;
+}
+
+.modal-footer button {
     font-size: 40px;
-    height: 58px;
+    border-radius: 10px;
+}
+
+
+
+
+
+/* SWIPER */
+.space {
+    flex: 1;
+}
+
+.swiper-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.swiper-body label {
+    margin:auto;
+    font-size: 80px;
+}
+
+.swiper-body .img {
+    margin:auto;
+    background-color: #00000055;
+    background-size: cover;
+    background-position: center;
+    width: 500px;
+    height: 500px;
+    border-radius: 20px;
+}
+
+
+
+.swiper-meets {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 10px rgb(255 255 255 / 70%);
+    border-radius: 20px;
+    margin: 30px 10px 0;
+    min-height: 0px;
+}
+
+.swiper-meets p {
+    font-size: 100px;
+    margin-block: 0;
+    margin: auto;
+}
+
+.swiper-meets .meets-list {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    min-height: 0px;
+}
+
+.swiper-meets .meets-list .meets-item:first-child {
+    border-top: solid 1px rgb(255 255 255 / 50%);
+}
+
+.swiper-meets .meets-list .meets-item {
+    display: flex;
+    padding:10px;
+    box-sizing: border-box;
+    border-bottom: solid 1px rgb(255 255 255 / 50%);
+}
+
+.swiper-meets .meets-list .meets-item button {
+    background: rgba(255, 0, 0, 0.3);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    flex: 1;
+    font-size: 50px;
+    padding: 10px;
+    margin: auto;
+}
+
+.swiper-meets .meets-list .meets-item div {
+    flex:2;
+}
+
+.swiper-meets .meets-list .meets-item div  * {
+    font-size: 50px;
+    word-break: break-all;
+}
+
+.swiper-meets .meets-list .meets-item div  *:last-child {
+    font-size: 40px;
+}
+
+
+
+.swiper-footer {
+    display: flex;
+    margin:20px 0;
+}
+
+.swiper-footer * {
+    color:#ffffff;
+    border: none;
+    border-radius: 10px;
+    flex:1;
+    font-size: 50px;
+    padding: 10px;
+    margin: 0 20px;
+}
+
+.swiper-footer .modify {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.swiper-footer .delete {
+    background: rgba(255, 0, 0, 0.3);
 }

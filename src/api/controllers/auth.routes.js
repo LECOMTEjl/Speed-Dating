@@ -14,7 +14,7 @@ const adminRole = 'ADMIN';
 const roles = [[adminRole], ['MEMBER']];
 
 const getSubscriber = (authorization) => {
-    var user
+    let user
     try {
         user = verifyAuthToken(authorization)
     }
@@ -28,7 +28,7 @@ router.get('/subscriber',
     guard.check(roles),
     (req, res) => {
 
-    var subscriber = getSubscriber(req.headers.authorization)
+    let subscriber = getSubscriber(req.headers.authorization)
     if (!subscriber) return res.sendStatus(401)
     
     Subscriber.getById(subscriber.id)
@@ -98,7 +98,7 @@ router.post('/login',
         Subscriber.findByEmail(email).then(subscriber => {
             subscriber = subscriber[0]
             if (!subscriber || !passwordsAreEqual(password, subscriber.password))
-                return res.sendStatus(401)
+                return res.sendStatus(400)
 
             const token = generateAuthToken(subscriber.id, subscriber.role, subscriber.password)
             res.status(201).json({ token })

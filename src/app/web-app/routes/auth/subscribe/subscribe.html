@@ -9,11 +9,16 @@
     <script src="services/redirect.js"></script>
     <script src="services/token.js"></script>
     <script src="services/http.js"></script>
+    <script src="services/web-error.js"></script>
     <script src="services/touched-function.js"></script>
+
     <script src="routes/auth/subscribe/subscribe.js"></script>
+
     <script src="components/heart-background.js"></script>
+    <script src="components/toast.js"></script>
     <body>
-        <heart-background></heart-background>
+        <my-toast id="toast"></my-toast>
+        <heart-background numberHearts="0"></heart-background>
         <form id="container" onsubmit="return false">
             <h1>S'inscrire</h1>
 
@@ -72,5 +77,4 @@
             <button onclick="redirect.to('login')">S'identifier</button>
         </form>
     </body>
-    <script src="services/toast.js"></script>
 </html>

@@ -1,133 +1,170 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <title>Speed Dating</title>
-    <link href="styles.css" rel="stylesheet">
-    <link href="routes/main/main.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<script src="environment.js"></script>
-<script src="services/redirect.js"></script>
-<script src="services/token.js"></script>
-<script src="services/http.js"></script>
-<script src="services/utils.js"></script>
-<script src="routes/main/main.js"></script>
-<script src="components/heart-background.js"></script>
+    <head>
+        <title>Speed Dating</title>
+        <link href="styles.css" rel="stylesheet">
+        <link href="routes/main/main.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+    
+    <script src="environment.js"></script>
+    <script src="services/redirect.js"></script>
+    <script src="services/token.js"></script>
+    <script src="services/web-error.js"></script>
+    <script src="services/http.js"></script>
+    <script src="services/utils.js"></script>
+    <script src="services/file-sender.js"></script>
+    
+    <script src="routes/main/main.js"></script>
+    
+    <script src="components/heart-background.js"></script>
+    <script src="components/modal-dialog.js"></script>
+    <script src="components/cloud-loader.js"></script>
+    <script src="components/swiper.js"></script>
+    <script src="components/toast.js"></script>
 
-<body>
-    <heart-background></heart-background>
-    <div id="container">
-        <div id="top-bar">
-            <h1>Speed Dating</h1>
-            <div id="user" onclick="main.seeUser()">
-                <!-- Wait for api response -->
-            </div>
-            <i class="material-icons exit" onclick="token.remove()">exit_to_app</i>
-        </div>
-        <div id="body">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col" colspan="4">Vos personnes</th>
-                    </tr>
-                    <tr>
-                        <td>Pseudo</td>
-                        <td>Age</td>
-                        <td>Genre</td>
-                        <td>Note</td>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    <!-- Wait for api response -->
-                </tbody>
-            </table>
-        </div>
-        <button id="add-user" onclick="main.generateDialog()">+</button>
-    </div>
-
-    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form id="form">
+    <body>
+        <my-toast id="toast"></my-toast>
+        <modal-dialog id="dialog-user">
+            <form id="formUser" class="modal-dialog">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                </div>
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                    <div class="input-div">
+                        <div class="img-btn">
+                            <input
+                                type="file"
+                                accept="image/png, image/jpg, image/jpeg, image/gif, "
+                                name="img"
+                                id="img"
+                                onchange="main.setInvalidMsgImage(this)"
+                            >
+                        </div>
+                        <label class="hint"></label>
                     </div>
-                    <div class="modal-body">
-                        <div class="input-div">
-                            <p>Prénom</p>
-                            <input
-                                id="firstName"
-                                required
-                                onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                                onchange="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                            >
-                            <label class="hint"></label>
-                        </div>
 
-                        <div class="input-div">
-                            <p>Nom</p>
-                            <input
-                                id="lastName"
-                                required
-                                onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                                onchange="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                            >
-                            <label class="hint"></label>
-                        </div>
-
-                        <div class="input-div">
-                            <p>Sexe</p>
-                            <select
-                                id="gender"
-                                required
-                                onchange="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                            >
-                                <option></option>
-                                <option value="m">Man</option>
-                                <option value="f">Woman</option>
-                            </select>
-                            <label class="hint"></label>
-                        </div>
-
-                        <div class="input-div">
-                            <p>Date d'anniversaire</p>
-                            <input
-                                type="date"
-                                id="birthday"
-                                required
-                                onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                                onchange="main.setInvalidMsg(this, 'Ne doit pas être vide')"
-                            >
-                            <label class="hint"></label>
-                        </div>
-
-                        <div class="input-div">
-                            <p>Note</p>
-                            <input
-                                type="number"
-                                id="note"
-                                min="0"
-                                max="10"
-                                step="1"
-                                onkeyup="main.setInvalidMsg(this, 'Doit être compris entre 0 et 10')"
-                                onchange="main.setInvalidMsg(this, 'Doit être compris entre 0 et 10')"
-                            >
-                            <label class="hint"></label>
-                        </div>
-
-                        <input type="file" name="img">
+                    <div class="input-div">
+                        <p>Prénom</p>
+                        <input
+                            id="firstName"
+                            required
+                            onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        >
+                        <label class="hint"></label>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" onclick="main.hideDialog()">Annuler</button>
-                        <button type="button" class="btn btn-primary" id="validModal">Valider</button>
+
+                    <div class="input-div">
+                        <p>Nom</p>
+                        <input
+                            id="lastName"
+                            required
+                            onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        >
+                        <label class="hint"></label>
+                    </div>
+
+                    <div class="input-div">
+                        <p>Sexe</p>
+                        <select
+                            id="gender"
+                            required
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        >
+                            <option></option>
+                            <option value="m">Homme</option>
+                            <option value="f">Femme</option>
+                        </select>
+                        <label class="hint"></label>
+                    </div>
+
+                    <div class="input-div">
+                        <p>Date d'anniversaire</p>
+                        <input
+                            type="date"
+                            id="birthday"
+                            required
+                            onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        >
+                        <label class="hint"></label>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="main.hideDialogUser()">Annuler</button>
+                    <button type="button" class="btn-valid" id="validUserModal">Valider</button>
+                </div>
             </form>
-        </div>
-    </div>
-</body>
-<script src="services/toast.js"></script>
+        </modal-dialog>
 
+        <modal-dialog id="dialog-meet">
+            <form id="formMeet" class="modal-dialog">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Modal title</h5>
+                </div>
+                <div class="modal-content">
+                    <div class="input-div">
+                        <p>Date</p>
+                        <input
+                            type="date"
+                            id="date"
+                            required
+                            onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        >
+                        <label class="hint"></label>
+                    </div>
+
+                    <div class="input-div">
+                        <p>Comentaire</p>
+                        <textarea
+                            id="comment"
+                            maxlength="200"
+                            onkeyup="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                            onchange="main.setInvalidMsg(this, 'Ne doit pas être vide.')"
+                        ></textarea>
+                        <label class="hint"></label>
+                    </div>
+
+                    <div class="input-div">
+                        <p>Note</p>
+                        <input
+                            id="note"
+                            type="number"
+                            min="0"
+                            max="10"
+                            onkeyup="main.setInvalidMsg(this, 'La note doit être compris entre 0 et 10.')"
+                            onchange="main.setInvalidMsg(this, 'La note doit être compris entre 0 et 10.')"
+                        >
+                        <label class="hint"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="main.hideDialogMeet()">Annuler</button>
+                    <button type="button" class="btn-valid" id="validMeetModal">Valider</button>
+                </div>
+            </form>
+        </modal-dialog>
+        <heart-background numberHearts="0"></heart-background>
+        <div id="container">
+            <div id="top-bar">
+                <h1>Speed Dating</h1>
+                <div id="user" onclick="main.seeUser()">
+                    <!-- Wait for api response -->
+                </div>
+                <i class="material-icons exit" onclick="token.remove()">exit_to_app</i>
+            </div>
+            <div id="body">
+                <my-swiper id="swiper">
+                    <div class="swiper-wrapper">
+                      <!-- Wait Api Response -->
+                    </div>
+                </my-swiper>
+            </div>
+            <button id="add-user" onclick="main.generateDialogUser()">+</button>
+        </div>
+    </body>
 </html>

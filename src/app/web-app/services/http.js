@@ -10,12 +10,12 @@ class Http {
         return this
     }
 
-    method(method) {
+    method(method = 'GET') {
         this._method = method
         return this
     }
 
-    headers(headers) {
+    headers(headers = {}) {
         this._headers = Object.assign(headers, this._headers)
         return this
     }
@@ -28,7 +28,7 @@ class Http {
         return this
     }
     
-    body(body) {
+    body(body = {}) {
         this._body = body
         return this
     }
@@ -37,11 +37,14 @@ class Http {
         if(!this.baseUrl)
             throw new Error('Missing baseUrl')
 
-        var url = this.baseUrl + this._url
+        let url = this.baseUrl + this._url
 
-        var fetchInit = {
+        this._headers = this._headers || {}
+        this._headers['content-type'] = this._headers['content-type'] || 'application/json'
+
+        let fetchInit = {
             method: this._method || 'GET',
-            headers: Object.assign(this._headers || {}, {'Content-Type': 'application/json'}),
+            headers: this._headers,
             mode: 'cors',
             cache: 'no-cache',
             body: JSON.stringify(this._body)
@@ -57,25 +60,32 @@ class Http {
             fetchInit.method,
             fetchInit.headers,
             fetchInit.body
-            )
+        )
 
-        return fetch(url, fetchInit)
-        .then(res => {
-            if(token.exist() && res.status == 401)
-                token.remove()
 
-            if(res.status >= 200 && res.status < 300) {
-                return res.json().then(msg => {
-                    return msg
-                })
-                .catch(err => {
-                    throw {status: res.status, msg: err}
-                })
-            }
-            else
-                return res.text().then(msg => {
-                    throw {status: res.status, msg: msg}
-                })
+        return new Promise(async (resolve, reject) => {
+            await fetch(url, fetchInit).then(res => {
+                if(token.exist() && res.status == 401)
+                    token.remove()
+
+                if(res.status >= 200 && res.status < 300) {
+                    return res.json().then(msg => {
+                        resolve(msg)
+                    })
+                    .catch(err => {
+                        reject({status: res.status, msg: err})
+                    })
+                }
+                else
+                    return res.text().then(msg => {
+                        document.getElementById('toast')?.create(WebError(res.status), undefined, true)
+                        reject({status: res.status, msg: msg})
+                    })
+            })
+            .catch(err => {
+                document.getElementById('toast')?.create(WebError(undefined), undefined, true)
+                console.log(err.stack)
+            })
         })
     }
 }

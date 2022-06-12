@@ -10,7 +10,7 @@ class HeartBackground extends HTMLElement {
         maxRotating : 5
     }
 
-    style = `
+    styleCss = `
         .hb-heartcontainer {
             position: absolute;
             top:0;
@@ -122,10 +122,10 @@ class HeartBackground extends HTMLElement {
     }
 
     connectedCallback() {
-        if(!document.getElementById("font-awesome-style"))
-            document.head.innerHTML += `<link id="font-awesome-style" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`
+        if(!document.getElementById("hb-font-awesome-style"))
+            document.head.innerHTML += `<link id="hb-font-awesome-style" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>`
         if(!document.getElementById("heart-background-style"))
-            document.head.innerHTML += `<style id="heart-background-style">${this.style}</style>`
+            document.head.innerHTML += `<style id="heart-background-style">${this.styleCss}</style>`
 
         if(this.hasAttribute('numberHearts'))
             this.attributes.numberHearts = this.getAttribute('numberHearts')
@@ -152,8 +152,8 @@ class HeartBackground extends HTMLElement {
     }
 
     disconnectedCallback() {
-        document.getElementById("font-awesome-style")?.remove()
-        document.getElementById("font-awesome-style")?.remove()
+        document.getElementById("hb-font-awesome-style")?.remove()
+        document.getElementById("heart-background-style")?.remove()
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -189,7 +189,7 @@ class HeartBackground extends HTMLElement {
         let fallingSpeed = this.random(this.attributes.minFalling, this.attributes.maxFalling)
         let delay = addDelay ? this.random(this.attributes.minDelay, this.attributes.maxDelay) : 0
         let rotateSense = Math.random() < 0.5 ? 'reverse' : 'normal'
-        var rotateSpeed = this.random(this.attributes.minRotating, this.attributes.maxRotating)
+        let rotateSpeed = this.random(this.attributes.minRotating, this.attributes.maxRotating)
         let left = this.random(undefined, document.body.offsetWidth - 200)
     
         let container = this.getElementsByClassName('hb-heart_'+i)?.item(0)
@@ -209,7 +209,7 @@ class HeartBackground extends HTMLElement {
             if(i < this.attributes.numberHearts)
                 this.generate(i, false)
             else {
-                var length = this.children.length
+                let length = this.children.length
                 if(i >= length)
                     this.getElementsByClassName('hb-heart_'+i)?.item(0)?.remove()
                 else {
@@ -226,7 +226,7 @@ class HeartBackground extends HTMLElement {
     }
     
     random(min = 0, max) {
-        var random = Math.floor((Math.random() * max) + 1)
+        let random = Math.floor((Math.random() * max) + 1)
         while(random < min)
             random = Math.floor((Math.random() * max) + 1)
         return random

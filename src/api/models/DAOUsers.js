@@ -15,8 +15,8 @@ class DAOUsers {
         return db.select('*').from(TABLES.users).where({id: id})
     }
     
-    static async add(subscriberId, firstName, lastName, gender, birthday, note) {
-        return await db.insert({subscriberId, firstName, lastName, gender, birthday, note}).into(TABLES.users)
+    static async add(subscriberId, firstName, lastName, gender, birthday) {
+        return (await db.insert({subscriberId, firstName, lastName, gender, birthday}).into(TABLES.users))?.[0]
     }
     
     static async remove(id) {
@@ -24,8 +24,8 @@ class DAOUsers {
         await db.delete().from(TABLES.users).where({id: id})
     }
     
-    static async update(id, firstName, lastName, gender, birthday, note) {
-        await db.from(TABLES.users).where({id: id}).update({firstName, lastName, gender, birthday, note})
+    static async update(id, firstName, lastName, gender, birthday) {
+        await db.from(TABLES.users).where({id: id}).update({firstName, lastName, gender, birthday})
     }
 }
 
